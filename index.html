@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script
+      src="https://code.jquery.com/jquery-3.6.2.min.js"
+      integrity="sha256-2krYZKh//PcchRtd+H+VyyQoZ/e3EcrkxhM8ycwASPA="
+      crossorigin="anonymous"
+    ></script>
+  </head>
+  <style>
+    /* 参考サイトより引用 */
+    .container-modal {
+      background-color: initial;
+      border: none;
+      height: 100%;
+      left: 0;
+      position: fixed;
+      top: 0;
+      width: 100%;
+    }
+    .container-modal::backdrop {
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+    .wrapper-modal {
+      background: rgba(255, 255, 255, 1);
+      border: none;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      height: 320px;
+      left: 50%;
+      opacity: 1;
+      padding: 40px;
+      position: absolute;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      transition: opacity 0.3s;
+      width: 480px;
+      z-index: 20;
+    }
+    /* ここまで引用 */
+    .btn-area {
+      position: absolute;
+      top: 80%;
+      left: 20%;
+    }
+    .each-btn {
+      padding: 0 3.5em;
+    }
+  </style>
+
+  <body>
+    <!-- ローカル環境なので通信処理せずonclickでテスト -->
+    <button type="button" id="dialogbtn" onclick="opendialog();">送信</button>
+  </body>
+
+  <script>
+    function opendialog() {
+      // ①モーダルの中身をhtmlで生成
+      $("body").append(
+        '<dialog class="container-modal" id="modalDialog"><div class="wrapper-modal"><h2>モーダルテスト</h2><a href="https://tedate.jp/javascript/to-create-a-modal-window-using-the-dialog-element/2">参考サイト</a><div class="btn-area"><span class="each-btn"><button class="buttonregister" id="buttonregister" type="submit">登録</button></span><span class="each-btn"><button class="buttonClose" id="buttonClose" type="button">キャンセル</button></span></div></div></dialog>'
+      );
+      const myDialog = document.getElementById("modalDialog");
+      myDialog.showModal(); //モーダルを開く
+
+      $("#buttonregister").on("click", () => {
+        //登録ボタン押下時の処理
+        myDialog.close($("body").append("<p>登録しました</p>")); //モーダルを閉じる ＆ 閉じる時の操作
+        $("#modalDialog").remove(); //①で生成したhtmlを削除
+      });
+      $("#buttonClose").on("click", () => {
+        //キャンセル押下時の処理
+        myDialog.close(); //モーダルを閉じる
+        $("#modalDialog").remove(); //①で生成したhtmlを削除
+      });
+    }
+  </script>
+</html>
